@@ -1,12 +1,10 @@
-
-use volatile::Volatile;
 use core::fmt;
 use lazy_static::lazy_static;
 use spin::Mutex;
+use volatile::Volatile;
 
 #[cfg(test)]
 use crate::{serial_print, serial_println};
-
 
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
@@ -37,7 +35,6 @@ pub enum Color {
     Yellow = 14,
     White = 15,
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
@@ -122,13 +119,9 @@ impl Writer {
                 // not part of printable ASCII range
                 _ => self.write_byte(0xfe),
             }
-
         }
     }
-
-
 }
-
 
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
@@ -153,8 +146,6 @@ pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
 }
-
-
 
 #[test_case]
 fn test_println_simple() {
@@ -185,4 +176,3 @@ fn test_println_output() {
 
     serial_println!("[ok]");
 }
-

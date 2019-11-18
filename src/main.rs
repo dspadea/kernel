@@ -13,10 +13,8 @@ pub extern "C" fn _start() -> ! {
 
     kernel::init();
 
-    x86_64::instructions::interrupts::int3();
-
     #[cfg(test)]
-        test_main();
+    test_main();
 
     println!("It did not crash!");
 
